@@ -1,2 +1,2 @@
 # urlcat
-Command line URL manipulation tool
+Command line URL processing tool
