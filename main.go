@@ -23,7 +23,7 @@ func newConfig() *config {
 	return &config{
 		from:        os.Stdin,
 		to:          os.Stdout,
-		stopOnError: false,
+		stopOnError: true,
 	}
 }
 
@@ -32,7 +32,7 @@ func processStream(c *config, r reporter) error {
 	for scanner.Scan() {
 		line := scanner.Text()
 		url, err := url.Parse(line)
-		if err != nil {
+		if err != nil && c.stopOnError {
 			return err
 		}
 		fmt.Fprintln(c.to, r(url))
@@ -47,8 +47,16 @@ func returnHost(u *url.URL) string     { return u.Host }
 
 func main() {
 	app := &cli.App{
-		Name:  "urlcat",
-		Usage: "url processing tool",
+		Name:        "urlcat",
+		Usage:       "url processing tool. Reads line separated ",
+		Description: "Reads Line separated URL's from stdin and returns the requested segment",
+		Version:     "1.0.0",
+		Authors: []cli.Author{
+			cli.Author{
+				Name:  "aquilax",
+				Email: "aquilax@gmail.com",
+			},
+		},
 		Commands: []cli.Command{
 			{
 				Name:    "filename",
@@ -61,7 +69,7 @@ func main() {
 			{
 				Name:    "host",
 				Aliases: []string{"h"},
-				Usage:   "returns the host",
+				Usage:   "Returns the host",
 				Action: func(c *cli.Context) error {
 					return processStream(newConfig(), returnHost)
 				},
@@ -69,7 +77,7 @@ func main() {
 			{
 				Name:    "scheme",
 				Aliases: []string{"s"},
-				Usage:   "returns the scheme",
+				Usage:   "Returns the URL scheme",
 				Action: func(c *cli.Context) error {
 					return processStream(newConfig(), returnProtocol)
 				},
@@ -77,7 +85,7 @@ func main() {
 			{
 				Name:    "query",
 				Aliases: []string{"q"},
-				Usage:   "returns the query",
+				Usage:   "Returns the query string",
 				Action: func(c *cli.Context) error {
 					return processStream(newConfig(), returnQuery)
 				},
