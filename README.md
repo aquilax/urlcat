@@ -19,11 +19,12 @@ DESCRIPTION:
    Reads Line separated URL's from stdin and returns the requested segment
 
 COMMANDS:
-     filename, f  returns the filename (default)
-     host, h      returns the host
-     scheme, s    returns the scheme
-     query, q     returns the query
-     help, h      Shows a list of commands or help for one command
+     filename, f   returns the filename (default)
+     extension, e  returns the file extension
+     host, h       Returns the host
+     scheme, s     Returns the URL scheme
+     query, q      Returns the query string
+     help, h       Shows a list of commands or help for one command
 
 GLOBAL OPTIONS:
    --help, -h     show help

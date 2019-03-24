@@ -7,6 +7,7 @@ import (
 	"net/url"
 	"os"
 	"path"
+	"path/filepath"
 
 	"gopkg.in/urfave/cli.v1"
 )
@@ -40,10 +41,11 @@ func processStream(c *config, r reporter) error {
 	return nil
 }
 
-func returnFilename(u *url.URL) string { return path.Base(u.Path) }
-func returnProtocol(u *url.URL) string { return u.Scheme }
-func returnQuery(u *url.URL) string    { return u.RawPath }
-func returnHost(u *url.URL) string     { return u.Host }
+func returnFilename(u *url.URL) string  { return path.Base(u.Path) }
+func returnProtocol(u *url.URL) string  { return u.Scheme }
+func returnQuery(u *url.URL) string     { return u.RawPath }
+func returnHost(u *url.URL) string      { return u.Host }
+func returnExtension(u *url.URL) string { return filepath.Ext(u.Path) }
 
 func main() {
 	app := &cli.App{
@@ -61,9 +63,17 @@ func main() {
 			{
 				Name:    "filename",
 				Aliases: []string{"f"},
-				Usage:   "returns the filename (default)",
+				Usage:   "Returns the filename (default)",
 				Action: func(c *cli.Context) error {
 					return processStream(newConfig(), returnFilename)
+				},
+			},
+			{
+				Name:    "extension",
+				Aliases: []string{"e"},
+				Usage:   "Returns the file extension",
+				Action: func(c *cli.Context) error {
+					return processStream(newConfig(), returnExtension)
 				},
 			},
 			{
