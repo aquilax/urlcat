@@ -54,7 +54,7 @@ func main() {
 		Description: "Reads Line separated URL's from stdin and returns the requested segment",
 		Version:     "1.0.0",
 		Authors: []cli.Author{
-			cli.Author{
+			{
 				Name:  "aquilax",
 				Email: "aquilax@gmail.com",
 			},
